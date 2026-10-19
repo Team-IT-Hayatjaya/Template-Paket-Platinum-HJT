@@ -63,41 +63,54 @@ class UnitContextService
             return null;
         }
 
-        // 1. Dukungan pengujian via header eksplisit (e.g. X-Unit-Subdomain: dispora)
-        if ($request->hasHeader('X-Unit-Subdomain')) {
-            $subdomain = strtolower((string) $request->header('X-Unit-Subdomain'));
-            return Unit::active()->where('subdomain', $subdomain)->first();
-        }
-
-        // 2. Dukungan environment lokal / testing via query parameter ?_unit=dispora
-        if (app()->environment('local', 'testing') && $request->filled('_unit')) {
-            $subdomain = strtolower((string) $request->query('_unit'));
-            return Unit::active()->where('subdomain', $subdomain)->first();
-        }
-
-        // 3. Resolusi dari Hostname / Subdomain HTTP
-        $host = strtolower($request->getHost());
-
-        // Abaikan IP address murni
-        if (filter_var($host, FILTER_VALIDATE_IP)) {
-            return null;
-        }
-
-        $parts = explode('.', $host);
-
-        // Jika setidaknya memiliki satu subdomain prefix (e.g. dispora.pemprov.go.id atau dispora.localhost)
-        if (count($parts) >= 2) {
-            $candidate = $parts[0];
-
-            // Abaikan prefix umum seperti www atau admin
-            if (in_array($candidate, ['www', 'mail', 'webmail', 'cpanel'], true)) {
+        try {
+            if (! Schema::hasTable('units')) {
                 return null;
             }
 
-            $unit = Unit::active()->where('subdomain', $candidate)->first();
-            if ($unit) {
-                return $unit;
+            // 1. Dukungan pengujian via header eksplisit (e.g. X-Unit-Subdomain: dispora)
+            if ($request->hasHeader('X-Unit-Subdomain')) {
+                $subdomain = strtolower((string) $request->header('X-Unit-Subdomain'));
+                return Unit::active()->where('subdomain', $subdomain)->first();
             }
+
+            // 2. Dukungan environment lokal / testing via query parameter ?_unit=dispora
+            if (app()->environment('local', 'testing') && $request->filled('_unit')) {
+                $subdomain = strtolower((string) $request->query('_unit'));
+                return Unit::active()->where('subdomain', $subdomain)->first();
+            }
+
+            // 3. Resolusi dari Hostname / Subdomain HTTP
+            $host = strtolower($request->getHost());
+
+            // Abaikan IP address murni
+            if (filter_var($host, FILTER_VALIDATE_IP)) {
+                return null;
+            }
+
+            $parts = explode('.', $host);
+
+            // Jika setidaknya memiliki satu subdomain prefix (e.g. dispora.pemprov.go.id atau dispora.localhost)
+            // Abaikan domain deployment Vercel (*.vercel.app) sebagai portal utama
+            if (str_ends_with($host, '.vercel.app')) {
+                return null;
+            }
+
+            if (count($parts) >= 2) {
+                $candidate = $parts[0];
+
+                // Abaikan prefix umum seperti www atau admin
+                if (in_array($candidate, ['www', 'mail', 'webmail', 'cpanel'], true)) {
+                    return null;
+                }
+
+                $unit = Unit::active()->where('subdomain', $candidate)->first();
+                if ($unit) {
+                    return $unit;
+                }
+            }
+        } catch (\Throwable) {
+            return null;
         }
 
         return null;

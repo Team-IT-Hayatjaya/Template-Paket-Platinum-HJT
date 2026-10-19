@@ -61,6 +61,7 @@
     "APP_SERVICES_CACHE": "/tmp/services.php",
     "VIEW_COMPILED_PATH": "/tmp/views",
     "CACHE_STORE": "array",
+    "CACHE_DRIVER": "array",
     "SESSION_DRIVER": "cookie",
     "LOG_CHANNEL": "stderr"
   }

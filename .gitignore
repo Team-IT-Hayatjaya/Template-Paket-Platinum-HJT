@@ -4,6 +4,7 @@
 .env.backup
 .env.production
 /database/*.sqlite
+!/database/database_platinum.sqlite
 /database/*.sqlite-journal
 .phpactor.json
 .phpunit.result.cache

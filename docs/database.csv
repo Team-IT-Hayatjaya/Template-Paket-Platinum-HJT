@@ -1,0 +1,89 @@
+tabel,kolom,tipe,keterangan,indeks,paket
+users,id,bigIncrements,ID Pengguna,primary,Silver
+users,name,string,Nama Lengkap,,Silver
+users,email,string,Alamat Email,unique,Silver
+users,password,string,Hash Kata Sandi,,Silver
+kategori_informasi,id,bigIncrements,ID Kategori,primary,Silver
+kategori_informasi,nama,string,Nama Kategori Informasi,,Silver
+kategori_informasi,slug,string,Slug URL,unique,Silver
+kategori_informasi,deskripsi,text,Deskripsi Kategori,nullable,Silver
+kategori_informasi,urutan,integer,Urutan Tampilan,default:0,Silver
+kategori_informasi,is_active,boolean,Status Aktif,default:true,Silver
+status_permohonan,id,bigIncrements,ID Status Permohonan,primary,Silver
+status_permohonan,nama,string,Nama Status,,Silver
+status_permohonan,slug,string,Slug Status,unique,Silver
+status_permohonan,deskripsi,text,Deskripsi Status,nullable,Silver
+status_permohonan,warna,string,Warna Lencana Status,default:#64748b,Silver
+status_permohonan,urutan,integer,Urutan Alur,default:0,Silver
+dokumen_informasi,id,bigIncrements,ID Dokumen,primary,Silver
+dokumen_informasi,kategori_id,unsignedBigInteger,Foreign Key Kategori,index,Silver
+dokumen_informasi,judul,string,Judul Dokumen Informasi,,Silver
+dokumen_informasi,slug,string,Slug Dokumen,unique,Silver
+dokumen_informasi,ringkasan,text,Ringkasan Isi Dokumen,nullable,Silver
+dokumen_informasi,tahun,integer,Tahun Pembuatan/Penerbitan,index,Silver
+dokumen_informasi,file_path,string,Lokasi Berkas PDF/WebP,,Silver
+dokumen_informasi,tipe_file,string,Ekstensi Berkas (PDF/WebP),default:pdf,Silver
+dokumen_informasi,ukuran_file,string,Ukuran Berkas Human-Readable,nullable,Silver
+dokumen_informasi,dilihat,integer,Jumlah Dilihat,default:0,Silver
+dokumen_informasi,diunduh,integer,Jumlah Diunduh,default:0,Silver
+dokumen_informasi,is_published,boolean,Status Terbit,default:true,Silver
+dokumen_informasi,tanggal_terbit,date,Tanggal Resmi Terbit,nullable,Silver
+dokumen_informasi,created_by,unsignedBigInteger,Foreign Key Pembuat (User),nullable,Silver
+permohonan_informasi,id,bigIncrements,ID Permohonan,primary,Silver
+permohonan_informasi,nomor_registrasi,string,Nomor Registrasi Resmi,unique|index,Silver
+permohonan_informasi,status_id,unsignedBigInteger,Foreign Key Status,index,Silver
+permohonan_informasi,kategori_pemohon,string,Perorangan / Badan Hukum / Kelompok,,Silver
+permohonan_informasi,nama_pemohon,string,Nama Lengkap Pemohon,,Silver
+permohonan_informasi,nik,text,NIK Terenkripsi (Encrypted Cast),,Silver
+permohonan_informasi,alamat,text,Alamat Lengkap Pemohon,,Silver
+permohonan_informasi,telepon,string,Nomor Telepon/HP,,Silver
+permohonan_informasi,email,string,Alamat Email,,Silver
+permohonan_informasi,identitas_file_path,string,Path Berkas KTP di Private Storage,,Silver
+permohonan_informasi,surat_kuasa_file_path,string,Path Surat Kuasa (Jika Ada),nullable,Silver
+permohonan_informasi,akta_badan_hukum_file_path,string,Path Akta/SK Badan Hukum,nullable,Silver
+permohonan_informasi,rincian_informasi,text,Rincian Informasi Dibutuhkan,,Silver
+permohonan_informasi,tujuan_penggunaan,text,Tujuan Penggunaan Informasi,,Silver
+permohonan_informasi,cara_memperoleh_informasi,string,Melihat / Salinan Softcopy,,Silver
+permohonan_informasi,cara_mendapat_salinan,string,Langsung / Pos / Email,,Silver
+permohonan_informasi,tenggat_jawab,dateTime,Tenggat Waktu Respons (Fitur Gold),nullable,Silver
+permohonan_informasi,tenggat_diperpanjang,dateTime,Tenggat Perpanjangan (Fitur Gold),nullable,Silver
+permohonan_informasi,catatan_internal,text,Catatan Manual Internal Admin,nullable,Silver
+keberatan,id,bigIncrements,ID Keberatan,primary,Silver
+keberatan,nomor_keberatan,string,Nomor Keberatan Resmi,unique|index,Silver
+keberatan,permohonan_id,unsignedBigInteger,Foreign Key Permohonan,nullable|index,Silver
+keberatan,nomor_registrasi_permohonan,string,Nomor Registrasi Permohonan Awal,,Silver
+keberatan,nama_pemohon,string,Nama Lengkap Pemohon Keberatan,,Silver
+keberatan,telepon,string,Nomor Telepon Pemohon,nullable,Silver
+keberatan,email,string,Alamat Email Pemohon,nullable,Silver
+keberatan,alasan_keberatan,string,Alasan Pengajuan Keberatan,,Silver
+keberatan,uraian_keberatan,text,Uraian Rinci Keberatan,,Silver
+keberatan,status,string,Status Internal Keberatan,default:diterima,Silver
+keberatan,catatan_internal,text,Catatan Manual Internal Admin,nullable,Silver
+pengaturan_ppid,id,bigIncrements,ID Pengaturan,primary,Silver
+pengaturan_ppid,nama_instansi,string,Nama Instansi Utama,,Silver
+pengaturan_ppid,sub_nama_instansi,string,Sub Nama Organisasi/Dinas,nullable,Silver
+pengaturan_ppid,nama_ppid,string,Nama Unit PPID,,Silver
+pengaturan_ppid,email_atasan_ppid,string,Alamat Email Atasan PPID,nullable,Silver
+pengaturan_ppid,warna_utama,string,Kode Hex Warna Utama,,Silver
+pengaturan_ppid,warna_sekunder,string,Kode Hex Warna Sekunder,nullable,Silver
+pengaturan_ppid,logo_path,string,Path Berkas Logo,nullable,Silver
+pengaturan_ppid,favicon_path,string,Path Berkas Favicon,nullable,Silver
+pengaturan_ppid,alamat,text,Alamat Kantor PPID,nullable,Silver
+pengaturan_ppid,telepon,string,Nomor Telepon Kantor,nullable,Silver
+pengaturan_ppid,email,string,Email Resmi PPID,nullable,Silver
+pengaturan_ppid,jam_layanan,text,Jadwal Jam Kerja & Pelayanan,nullable,Silver
+pengaturan_ppid,maklumat_pelayanan,text,Teks Maklumat Pelayanan,nullable,Silver
+log_aktivitas,id,bigIncrements,ID Log Aktivitas,primary,Silver
+log_aktivitas,user_id,unsignedBigInteger,Foreign Key User Pelaksana,nullable|index,Silver
+log_aktivitas,aktivitas,string,Jenis Aktivitas (create/update/delete),,Silver
+log_aktivitas,deskripsi,text,Uraian Aktivitas,,Silver
+log_aktivitas,tipe_subjek,string,Model yang Berubah,nullable,Silver
+log_aktivitas,subjek_id,unsignedBigInteger,ID Record Model yang Berubah,nullable,Silver
+log_aktivitas,ip_address,string,Alamat IP Pengguna,nullable,Silver
+log_aktivitas,user_agent,text,User Agent Browser,nullable,Silver
+log_aktivitas,properties,json,Payload Perubahan Data,nullable,Silver
+log_aktivitas,created_at,timestamp,Waktu Kejadian,,Silver
+riwayat_permohonan,,,,,(DILARANG - Fitur Gold)
+jawaban_permohonan,,,,,(DILARANG - Fitur Gold)
+tanggapan_keberatan,,,,,(DILARANG - Fitur Gold)
+hari_libur,,,,,(DILARANG - Fitur Gold)

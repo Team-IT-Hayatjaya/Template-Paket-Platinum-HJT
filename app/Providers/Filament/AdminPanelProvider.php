@@ -28,14 +28,14 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->renderHook(PanelsRenderHook::HEAD_END, fn () => view('filament.components.platinum-theme'))
             ->login(\App\Filament\Auth\Login::class)
             ->profile()
             ->multiFactorAuthentication([
                 AppAuthentication::make(),
             ], isRequired: false)
             ->brandName(function () {
-                $pkg = strtoupper(config('packages.default', 'gold'));
+                $pkg = strtoupper(config('packages.default', 'platinum'));
                 $prefix = $pkg === 'GOLD' ? '⭐ ' : ($pkg === 'PLATINUM' ? '💎 ' : '');
                 return "Panel Admin Instansi — {$prefix}Paket {$pkg}";
             })

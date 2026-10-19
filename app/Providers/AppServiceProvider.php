@@ -48,6 +48,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (request()->header('X-Forwarded-Proto') === 'https' || env('APP_ENV') === 'production') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         // Event Subscriber for Activity Log on Authentication
         Event::subscribe(LogAuthenticationActivity::class);
 

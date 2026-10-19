@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->trustProxies(at: '*');
         $middleware->redirectGuestsTo('/admin/login');
         // Paket Gold: daftar blokir IP (no-op pada Silver). Dipasang setelah
         // TrustProxies agar $request->ip() membaca IP klien asli.
